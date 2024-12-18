@@ -2,25 +2,17 @@ data Tree t = Nilt |
               Node t (Tree t) (Tree t)
               deriving (Read)
 
-maiorDiametro :: (Num t, Ord t) => Tree t -> t
-maiorDiametro (Nilt) = 0
-maiorDiametro (Node val Nilt Nilt) = 0
-maiorDiametro (Node val lt rt) = maxnode - minnode
+alturaArvore :: Tree t -> Int
+alturaArvore Nilt = 0
+alturaArvore (Node x ln rn) = max (1 + alturaArvore ln) (1 + alturaArvore rn)
+
+
+
+maiorDiametro :: Ord t => Tree t -> Int
+maiorDiametro Nilt = 0
+maiorDiametro (Node arvore ln rn)  = max (max (maiorDiametro rn) (maiorDiametro ln)) diametro 
     where
-        maxnode = maxValue (Node val lt rt)
-        minnode = minValue (Node val lt rt)
-
-maxValue :: (Num t, Ord t) => Tree t -> t
-maxValue (Node val Nilt Nilt) = val
-maxValue (Node val lt Nilt) = maximum [val, maxValue lt]
-maxValue (Node val Nilt rt) = maximum [val, maxValue rt]
-maxValue (Node val lt rt) = maximum [val,  maxValue (lt), (maxValue rt)]
-
-minValue :: (Num t, Ord t) => Tree t -> t
-minValue (Node val Nilt Nilt) = val
-minValue (Node val lt Nilt) = minimum [val, minValue lt]
-minValue (Node val Nilt rt) = minimum [val, minValue rt]
-minValue (Node val lt rt) = minimum [val , minValue (lt), (minValue rt)]
+        diametro = alturaArvore ln + alturaArvore rn + 1
 
 
 main = do
